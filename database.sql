@@ -40,10 +40,40 @@ INSERT INTO "accounts"(user_id,
     username,
     city,
     transactions_completed,
-    transactions_attempted)
-VALUES(11,'Sharifa', 'Minneapolis', '0','0');
+    transactions_attempted,
+    account_balance)
+VALUES(11,'Sharifa', 'Minneapolis', '0','0','0');
 
 --The bank is losing money in Miami and Phoenix and needs to unload low transaction customers: How do you delete users that reside in miami OR phoenix and have completed fewer than 5 transactions.
 ELECT * FROM "accounts"
 WHERE "city" = 'phoenix'AND "transactions_completed"<5
 OR "city" = 'miami' AND "transactions_completed"<5;
+
+STRETCH
+--------------------
+--Anthony moved to Santa Fe. Update his location in the table.
+DELETE FROM "accounts"
+WHERE "username" = 'anthony';
+
+Oops, Grace murdered Anthony so the bank removed Anthony's account. Grace fled to Santa Fe.
+--Grace closed her account. Remove her from the database.
+UPDATE "accounts"
+SET "city" = 'santa fe'
+WHERE "username" = 'grace';
+
+--Travis made a withdrawal of $20,000. What's their new balance? NOTE: Research RETURNING
+UPDATE "accounts" 
+SET "account_balance" = "account_balance" - 20000.00
+WHERE "username" = 'travis';
+
+--The Bank needs to track last names. NOTE: Research ALTER TABLE
+ALTER TABLE "accounts" ADD "lastname" varchar(20);
+
+--What is the total amount of money held by the bank? NOTE: Research SUM
+SELECT SUM("account_balance")
+FROM "accounts";
+
+--What is the total amount of money held by the bank at each location? NOTE: Research GROUP BY
+SELECT "city", SUM("account_balance")
+FROM "accounts" 
+GROUP BY "city";
